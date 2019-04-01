@@ -48,8 +48,8 @@ public class EspertodegliOnomasticiApp extends DialogflowApp {
 
     String reqDate = (String) request.getParameter("date");
 
-    String month = reqDate.substring(6,8);
-    String day = reqDate.substring(9,11);
+    String month = reqDate.substring(5,7);
+    String day = reqDate.substring(8,10);
 
     Gson gson = new Gson();
     BufferedReader reader = null;
@@ -66,14 +66,17 @@ public class EspertodegliOnomasticiApp extends DialogflowApp {
     Map<String, Onomastico> onomasticiMap = gson.fromJson(reader, type);
 
     String date = month+day;
+    LOGGER.info("date: "+date);
     Onomastico onomastico = onomasticiMap.get(date);
 
     StringBuilder response = new StringBuilder(onomastico.getSanto());
 
-    response.append(". Altri santi sono: ");
+    if(onomastico.getAltri()!=null) {
+      response.append(". Altri santi sono: ");
 
-    for (String altroSanto : onomastico.getAltri()){
-      response.append(altroSanto).append(",");
+      for (String altroSanto : onomastico.getAltri()) {
+        response.append(altroSanto).append(",");
+      }
     }
 
 
